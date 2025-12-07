@@ -1,0 +1,460 @@
+.notes-prev {
+  display: flex;
+  flex-wrap: wrap; /* ✅ allow wrapping to next row */
+  gap: 16px; /* spacing between notes */
+  justify-content: center;
+  padding: 20px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.note-carousel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* pushes footer to bottom */
+  flex: 1 1 300px;
+  max-width: 300px;
+  min-width: 260px;
+  background-color: #1e1e1e; /* your theme */
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid #444;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  color: #f1f1f1; /* optional: white text for dark bg */
+}
+
+.note-carousel .content {
+  flex-grow: 1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  text-align: left;
+  margin: 10px 0;
+}
+
+.prev-title {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.char {
+  margin: 0;
+  align-items: end;
+  min-width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.char h3 {
+  align-items: center;
+}
+
+.prev-footer-right {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  align-items: end;
+  min-width: 100%;
+}
+
+.prev-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background-color: #131111;
+  color: #fff;
+  margin: 0;
+  padding-top: 70px; /* <- compensate for fixed navbar */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.navbar {
+  background-color: #333;
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed; /* <- so it sticks */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.nav-logo {
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-right a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-right a:hover,
+.dropdown-content a:hover {
+  text-decoration: underline;
+}
+
+.dropdown {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.dropbtn {
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #444;
+  min-width: 140px;
+  right: 0;
+  top: 100%;
+  z-index: 1;
+  border-radius: 4px;
+}
+
+.dropdown-content a {
+  color: white;
+  padding: 10px;
+  display: block;
+  text-decoration: none;
+}
+.dropdown-content .btn {
+  color: white;
+  padding: 10px;
+  background: #444;
+  border: none;
+  display: block;
+  text-decoration: none;
+}
+
+.prev-btn {
+  color: white;
+  padding: 10px;
+  padding-left: 0;
+  background: #1e1e1e;
+  border: none;
+  display: block;
+  text-decoration: none;
+  cursor: progress;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  font-size: 1.5rem;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-right {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background-color: #333;
+    margin-top: 10px;
+  }
+
+  .nav-right.active {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+}
+
+/* Animation for disabled links */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.03);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+}
+
+.disabled-link {
+  color: #bbb;
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  animation: pulse 2s infinite;
+}
+
+/* Optional: subtle underline on hover even if it doesn't click */
+.disabled-link:hover {
+  text-decoration: underline dotted;
+  color: #ccc;
+}
+
+.toast {
+  position: fixed; /* Take it out of normal flow */
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999; /* Above everything, including navbar */
+  background: #333;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(-30px);
+  transition: all 0.4s ease;
+  max-width: 300px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  line-height: 1.4;
+  font-size: 14px;
+  pointer-events: none; /* Prevent interaction if hovered */
+}
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* modal css here  */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  align-items: center;
+  padding: 20px;
+  overflow-y: auto; /* ensures modal stays scrollable if needed */
+}
+
+.modal-content {
+  background-color: #191b1b;
+  padding: 25px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh; /* limit height to 90% of viewport */
+  overflow-y: auto; /* allow scrolling inside the modal if content is too tall */
+  position: relative;
+  box-sizing: border-box;
+}
+
+.close-btn {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.meta {
+  color: #777;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Optional: improve text area look on mobile */
+#editArea {
+  font-family: inherit;
+  font-size: 16px;
+  padding: 10px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.modal-header h2 {
+  font-size: 22px;
+  margin: 0;
+  flex: 1 1 auto;
+  word-break: break-word;
+}
+
+.close-btn {
+  font-size: 24px;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0 10px;
+  color: #888;
+}
+
+/* Optional: refine on small screens */
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 15px;
+    border-radius: 8px;
+    max-height: 95vh;
+  }
+  .close-btn {
+    right: 10px;
+    top: 8px;
+    font-size: 22px;
+  }
+}
+@media (max-width: 450px) {
+  .modal-content {
+    padding: 15px;
+    border-radius: 8px;
+    max-height: 95vh;
+  }
+  .close-btn {
+    right: 10px;
+    top: 8px;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-header h2 {
+    font-size: 18px;
+  }
+
+  .close-btn {
+    font-size: 22px;
+    padding: 0;
+  }
+}
+
+/* profile css  */
+
+.form-group {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.form-group label {
+  background-color: #555;
+  color: white;
+  padding: 10px 12px;
+  border: 1px solid #555;
+  border-radius: 6px 0 0 6px;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  max-height: 67px;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="file"] {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #555;
+  border-left: none;
+  border-radius: 0 6px 6px 0;
+  background-color: #444;
+  color: white;
+  font-size: 1rem;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.form-group input[type="file"] {
+  background-color: #444;
+  color: white;
+  padding: 9px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #888;
+  background-color: #555;
+}
+
+/* Responsive fallback for small screens */
+@media (max-width: 480px) {
+  .form-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-group label {
+    border-radius: 6px 6px 0 0;
+    border-right: none;
+    text-align: left;
+    justify-content: flex-start;
+    padding: 8px 10px;
+  }
+
+  .form-group input {
+    border-radius: 0 0 6px 6px;
+    border-top: none;
+  }
+}
+
+.nav-img {
+  margin-right: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #888;
+}
